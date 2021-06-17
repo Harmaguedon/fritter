@@ -16,8 +16,9 @@ class UserTile extends StatelessWidget {
   final String screenName;
   final String? imageUri;
   final bool verified;
+  final Function? onRefresh;
 
-  const UserTile({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified}) : super(key: key);
+  const UserTile({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, required this.verified, this.onRefresh}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class UserTile extends StatelessWidget {
       subtitle: Text('@$screenName'),
       trailing: Container(
         width: 36,
-        child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri),
+        child: FollowButton(id: id, name: name, screenName: screenName, imageUri: imageUri, onRefresh: onRefresh),
       ),
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(username: screenName)));
@@ -76,8 +77,9 @@ class FollowButton extends StatefulWidget {
   final String name;
   final String screenName;
   final String? imageUri;
+  final Function? onRefresh;
 
-  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri}) : super(key: key);
+  const FollowButton({Key? key, required this.id, required this.name, required this.screenName, this.imageUri, this.onRefresh}) : super(key: key);
 
   @override
   _FollowButtonState createState() => _FollowButtonState();
@@ -206,6 +208,7 @@ class _FollowButtonState extends State<FollowButton> {
                       // Then add them to all the selected groups
                       await HomeModel()
                           .saveUserGroupMembership(id, memberships);
+                      widget.onRefresh?.call();
                     },
                   );
                 },
@@ -214,6 +217,7 @@ class _FollowButtonState extends State<FollowButton> {
             break;
           case 'toggle_subscribe':
             await toggleSubscribe(id, followed);
+            widget.onRefresh?.call();
             break;
         }
       },

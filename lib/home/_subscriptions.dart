@@ -432,13 +432,14 @@ class _SubscriptionListFragmentState extends State<SubscriptionListFragment> {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   var user = data[index];
-
+                                
                   return UserTile(
                     id: user.id.toString(),
                     name: user.name,
                     screenName: user.screenName,
                     imageUri: user.profileImageUrlHttps,
                     verified: user.verified,
+                    onRefresh: widget.onRefresh,
                   );
                 },
               );
