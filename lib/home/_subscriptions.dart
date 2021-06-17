@@ -202,7 +202,7 @@ class _SubscriptionGroupFragmentState extends State<SubscriptionGroupFragment> {
           );
         },
       );
-    });
+    }).then((_) => setState((){}));
   }
 
   Widget _createGroupCard(IconData icon, String id, String name, int? numberOfMembers, void Function()? onLongPress) {
